@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_clientes', function(Blueprint $table){
-            $table->id('cliente_id');
+            $table->id();
             $table->string('dpi_cliente', 13)->unique();
             $table->string('nombre1_cliente', 20);
             $table->string('nombre2_cliente', 20)->nullable();

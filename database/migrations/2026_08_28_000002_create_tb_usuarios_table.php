@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_usuarios', function (Blueprint $table){
-            $table->id('usuario_id');
+            $table->id();
             $table->string('nombre1_usuario', 20);
             $table->string('nombre2_usuario', 20)->nullable();
             $table->string('nombre3_usuario', 20)->nullable();
@@ -20,14 +20,12 @@ return new class extends Migration
             $table->string('email_usuario', 50)->unique();
             $table->string('direccion_usuario', 50)->nullable();
             $table->string('password_hash_usuario', 200);
-            $table->foreingID('rol_id')->constrained('tb_roles', 'rol_id')->restrictOnDelete();
-            $table->timstamps();
-
-
+            $table->foreignId('rol_id')->constrained('tb_roles')->onDelete('restrict');
+            $table->timestamps();
         });
     }
     public function down(): void
     {
-        Schema::dropIfExists('tb:usuarios');
+        Schema::dropIfExists('tb_usuarios');
     }
 };

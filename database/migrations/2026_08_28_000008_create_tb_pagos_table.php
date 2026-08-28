@@ -9,20 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_pagos', function (Blueprint $table) {
-            $table->id('pago_id');
+            $table->id();
             $table->decimal('monto_pago', 10, 2);
             $table->dateTime('fecha_pago');
             $table->enum('metodo_pago', ['Efectivo', 'Credito', 'Debito']);
             $table->enum('estado_pago', ['PAGADO', 'NO PAGADO'])->default('NO PAGADO');
-
-            $table->foreignId('lecturas_id')
-                  ->unique()
-                  ->constrained('tb_lecturas', 'lecturas_id')
-                  ->restrictOnDelete();
-
-            $table->foreignId('usuario_id')
-                  ->constrained('tb_usuarios', 'usuario_id')
-                  ->restrictOnDelete();
+            $table->foreignId('lecturas_id')->unique()->constrained('tb_lecturas')->onDelete('restrict');
+            $table->foreignId('usuario_id')->constrained('tb_usuarios')->onDelete('restrict');
 
             $table->timestamps();
         });

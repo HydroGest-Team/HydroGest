@@ -9,12 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_contadores', function(Blueprint $table){
-            $table->id('contador_id');
+            $table->id();
             $table->string('codigo_contador', 20);
             $table->string('sector_contador', 50);
             $table->enum('activo_contador', ['Activo', 'Inactivo'])->default('Activo');
             $table->dateTime('fecha_instalcion')->nullable();
-            $table->foreignId('cliente_id')->constrained('tb_clientes')->restrictOnDelete();
+            $table->foreignId('cliente_id')->constrained('tb_clientes')->onDelete('restrict');
             $table->timestamps();
         });
     }

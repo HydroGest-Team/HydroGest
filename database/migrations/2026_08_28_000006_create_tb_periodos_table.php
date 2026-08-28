@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_periodos', function(Blueprint $table){
-            $table->id('periodo_id');
+            $table->id();
             $table->dateTime('fecha_apertura');
             $table->dateTime('fecha_cierre')->nullable();
             $table->enum('estado_periodo', ['Abierto', 'Cerrado'])->default('Abierto');
