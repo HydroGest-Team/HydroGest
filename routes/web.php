@@ -9,3 +9,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// ruta temporal para el login
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+// TODO: temporal para preview de diseño — I1 reemplazará $role por auth()->user()->role al conectar el login real
+Route::get('/bienvenida', function () {
+    $role = request('rol', 'admin');
+    return view('bienvenida', compact('role'));
+});
