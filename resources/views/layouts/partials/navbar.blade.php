@@ -26,28 +26,8 @@
                         <button type="submit" class="dropdown-item">Logout</button>
                     </form>
                 </li>
-                {{-- TODO: cambiar # por route() cuando I2/I3 tengan sus rutas listas (Sprint 2) --}}
+                <!-- TODO: cambiar # por route('logout') y hacer que funcione el logout -->
                 <li><a class="dropdown-item" href="#">Logout</a></li>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                    Clientes
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Contadores
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    Tarifas
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                    Lecturas
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
-                    Pagos
-                </a>
             </ul>
         </li>
     </ul>
