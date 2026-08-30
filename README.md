@@ -14,8 +14,3 @@ HydroGest - Sistema de gestion hidrica
 - Recuerden mover el estado de la tarjeta manualmente-
 
 ---
-
-## Estado actual 27/08/2026
-
-- **Sprint 1 — SCRUM-2 (Frontend):** Layout base integrado con la plantilla **SB Admin** (Bootstrap 5). Navbar, sidebar y footer funcionando como partials reutilizables (`layouts/partials/`). Dashboard de prueba cargando correctamente en `/dashboard`.
-- Rutas de módulos (Clientes, Contadores, Tarifas, Lecturas, Pagos) en el sidebar están como placeholders (`#`) hasta que se implementen en Sprint 2 — actualizar con `route()` cuando estén listas.
