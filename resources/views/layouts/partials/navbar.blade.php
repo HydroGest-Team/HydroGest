@@ -17,37 +17,8 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#!">Settings</a></li>
                 <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                <li>
-                    <hr class="dropdown-divider" />
-                </li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item">Logout</button>
-                    </form>
-                </li>
-                {{-- TODO: cambiar # por route() cuando I2/I3 tengan sus rutas listas (Sprint 2) --}}
+                <!-- TODO: cambiar # por route('logout') y hacer que funcione el logout -->
                 <li><a class="dropdown-item" href="#">Logout</a></li>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                    Clientes
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Contadores
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    Tarifas
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                    Lecturas
-                </a>
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
-                    Pagos
-                </a>
             </ul>
         </li>
     </ul>
