@@ -11,20 +11,16 @@ Route::patch('contadores/{contador}/toggle', [ContadorController::class, 'toggle
 Route::resource('tarifas', TarifaController::class)->only(['index', 'create', 'store', 'show']);
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// ruta temporal para el login
-Route::get('/login', function () {
-    return view('auth.login');
-});
 
 Route::get('/bienvenida', function () {
-    $role = auth()->user()->role->nombre;
+    $role = auth()->user()->role->nombre_rol;
     return view('bienvenida', compact('role'));
 })->middleware('auth');
 
