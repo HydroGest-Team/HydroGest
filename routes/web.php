@@ -15,8 +15,9 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-// TODO: temporal para preview de diseño — I1 reemplazará $role por auth()->user()->role al conectar el login real
 Route::get('/bienvenida', function () {
-    $role = request('rol', 'admin');
+    $role = auth()->user()->role->nombre;
     return view('bienvenida', compact('role'));
-});
+})->middleware('auth');
+
+require __DIR__.'/auth.php';
