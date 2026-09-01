@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ContadorController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('clientes', ClienteController::class);
+Route::resource('contadores', ContadorController::class)->parameters(['contadores' => 'contador']);
+Route::patch('contadores/{contador}/toggle', [ContadorController::class, 'toggleActivo'])->name('contadores.toggle');
 
 Route::get('/', function () {
     return view('welcome');

@@ -2,22 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Contador extends Model
 {
-    use HasFactory;
+    protected $table = 'tb_contadores';
 
-    protected $fillable = ['cliente_id', 'codigo', 'sector', 'activo'];
+    protected $fillable = [
+        'numero_contador',
+        'tipo_contador',
+        'marca_contador',
+        'modelo_contador',
+        'cliente_id',
+    ];
+
+    protected $cast = [
+        'fecha_instalacion' => 'datetime',
+    ];
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
     public function lecturas()
     {
-        return $this->hasMany(Lectura::class);
+        return $this->hasMany(Lectura::class, 'contador_id');
     }
 }
