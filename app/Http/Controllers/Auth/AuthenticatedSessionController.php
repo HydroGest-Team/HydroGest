@@ -28,7 +28,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('bienvenida', absolute: false));
+        // Se usa redirect directo en vez de intended() porque el flujo de HidroGest
+        // siempre debe llevar a /bienvenida tras login, sin importar la URL previa
+        return redirect()->route('bienvenida');
     }
 
     /**

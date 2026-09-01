@@ -22,6 +22,6 @@ Route::get('/dashboard', function () {
 Route::get('/bienvenida', function () {
     $role = auth()->user()->role->nombre_rol;
     return view('bienvenida', compact('role'));
-})->middleware('auth');
+})->middleware('auth')->name('bienvenida');
 
 require __DIR__.'/auth.php';
