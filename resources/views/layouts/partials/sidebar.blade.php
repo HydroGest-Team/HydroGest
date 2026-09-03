@@ -9,15 +9,15 @@
 
             <div class="sb-sidenav-menu-heading">Gestión</div>
             <!-- TODO: cambiar # por route() cuando I2/I3 tengan sus rutas listas (Sprint 2) -->
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('clientes.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                 Clientes
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('contadores.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Contadores
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('tarifas.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 Tarifas
             </a>

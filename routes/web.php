@@ -11,7 +11,7 @@ Route::patch('contadores/{contador}/toggle', [ContadorController::class, 'toggle
 Route::resource('tarifas', TarifaController::class)->only(['index', 'create', 'store', 'show']);
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -23,8 +23,8 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-// TODO: temporal para preview de diseño — I1 reemplazará $role por auth()->user()->role al conectar el login real
+// TODO: temporal para preview de diseño — reemplazar $role por auth()->user()->role
 Route::get('/bienvenida', function () {
-    $role = request('rol', 'admin');
+    $role = request('rol', 'Administrador'); // Administrador, Secretaria o Empleado
     return view('bienvenida', compact('role'));
 });
