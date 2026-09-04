@@ -9,14 +9,14 @@ class Contador extends Model
     protected $table = 'tb_contadores';
 
     protected $fillable = [
-        'numero_contador',
-        'tipo_contador',
-        'marca_contador',
-        'modelo_contador',
+        'codigo_contador',
+        'sector_contador',
+        'activo_contador',
+        'fecha_instalacion',
         'cliente_id',
     ];
 
-    protected $cast = [
+    protected $casts = [
         'fecha_instalacion' => 'datetime',
     ];
 

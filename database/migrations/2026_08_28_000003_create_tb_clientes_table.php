@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('telefono_cliente', 8)->nullable();
             $table->string('direccion_cliente', 50)->nullable();
             $table->string('numero_cuenta_cliente', 20)->nullable();
-            $table->enum('activo_cliente', ['Activo', 'Inactivo'])->default('Activo');
+            $table->enum('activo_cliente', ['ACTIVO', 'NO ACTIVO'])->default('ACTIVO');
             $table->timestamps();
         });
     }
