@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ContadorController;
 use App\Http\Controllers\TarifaController;
@@ -17,7 +16,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
 
 Route::get('/bienvenida', function () {
     $role = auth()->user()->role->nombre_rol;

@@ -13,7 +13,7 @@ class ClienteRequest extends FormRequest
 
     public function rules(): array
     {
-        $clienteId = $this->route('cliente');
+        $clienteId = $this->route('cliente')?->id;
 
         return [
             'dpi_cliente'          => 'required|digits:13|unique:tb_clientes,dpi_cliente,' . $clienteId,

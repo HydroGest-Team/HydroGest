@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('fecha_apertura');
             $table->dateTime('fecha_cierre')->nullable();
-            $table->enum('estado_periodo', ['Abierto', 'Cerrado'])->default('Abierto');
+            $table->enum('estado_periodo', ['ACTIVO', 'CERRADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }

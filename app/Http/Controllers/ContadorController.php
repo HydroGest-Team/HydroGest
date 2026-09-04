@@ -13,7 +13,10 @@ class ContadorController extends Controller
         $contadores = Contador::with('cliente')
             ->orderBy('codigo_contador')
             ->paginate(15);
-        return view('contadores.index', compact('contadores'));
+        $clientes = Cliente::where('activo_cliente', 'ACTIVO')
+            ->orderBy('apellido1_cliente')
+            ->get();
+        return view('contadores.index', compact('contadores', 'clientes'));
     }
 
     public function create()
