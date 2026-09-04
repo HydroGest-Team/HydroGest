@@ -30,13 +30,13 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function lecturas()
-    {
-        return $this->hasMany(Lectura::class, 'registrado_por');
-    }
+   public function lecturas()
+{
+    return $this->hasMany(Lectura::class, 'usuario_id');
+}
 
-    public function pagos()
-    {
-        return $this->hasMany(Pago::class, 'registrado_por');
-    }
+public function pagos()
+{
+    return $this->hasMany(Pago::class, 'usuario_id');
+}
 }
