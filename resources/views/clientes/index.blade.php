@@ -38,7 +38,7 @@
                     <td>{{ $cliente->dpi_cliente }}</td>
                     <td>{{ $cliente->telefono_cliente }}</td>
                     <td>
-                        @if ($cliente->activo_cliente === 'ACTIVO')
+                        @if ($cliente->activo_cliente === 'Activo')
                         <span class="badge bg-success">Activo</span>
                         @else
                         <span class="badge bg-secondary">No activo</span>
@@ -132,8 +132,8 @@
                     <div class="mb-3">
                         <label class="form-label">Estado</label>
                         <select class="form-select" name="activo_cliente" id="cliente_activo">
-                            <option value="ACTIVO">Activo</option>
-                            <option value="NO ACTIVO">No activo</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
                         </select>
                     </div>
                 </div>

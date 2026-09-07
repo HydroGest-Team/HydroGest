@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tipo_Tarifa extends Model
+class TipoTarifa extends Model
 {
-    protected $table = 'tb_tipo_tarifas';
+    protected $table = 'tb_tipo_tarifa';
 
     protected $fillable = [
-        'nombre_tipo_tarifa',
-        'descripcion_tipo_tarifa',
+        'nombre_tipo',
+        'descripcion',
     ];
 
     public function tarifas()

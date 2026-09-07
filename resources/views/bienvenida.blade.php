@@ -3,7 +3,7 @@
 @section('title', 'Bienvenida - HidroGest')
 
 @section('content')
-<h1 class="mt-4">¡Bienvenido, {{ $role === 'admin' ? 'Administrador' : ($role === 'secretaria' ? 'Secretaria' : 'Lector') }}!</h1>
+<h1 class="mt-4">¡Bienvenido, {{ $role === 'Administrador' ? 'Administrador' : ($role === 'Secretaria' ? 'Secretaria' : 'Empleado') }}!</h1>
 
 @if ($role === 'Administrador')
 <p>Tienes acceso completo al sistema: clientes, contadores, tarifas, lecturas, pagos y dashboard.</p>
