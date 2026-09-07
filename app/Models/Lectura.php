@@ -13,12 +13,10 @@ class Lectura extends Model
         'periodo_id',
         'lectura_anterior',
         'lectura_actual',
-        // 'consumo' NO va aquí — es columna generada (storedAs), MySQL la calcula sola
         'tarifa_id',
         'monto',
         'fecha_lectura',
         'usuario_id',
-        // 'estado' NO va — el estado se determina por existencia de registro en tb_pagos
     ];
 
     protected $casts = [
