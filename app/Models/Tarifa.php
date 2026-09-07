@@ -33,6 +33,6 @@ class Tarifa extends Model
 
     public static function vigente()
     {
-        return static::whereNull('vigente_hasta')->latest('vigente_hasta')->first();
+        return static::whereNull('vigente_hasta')->latest('vigente_desde')->first();
     }
 }
