@@ -9,7 +9,7 @@
     </div>
     <div class="card-body">
         {{-- TODO: cambiar action a route('login') cuando I1 implemente Breeze/auth --}}
-        <form method="POST" action="#">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-floating mb-3">
                 <input class="form-control" id="email" name="email" type="email" placeholder="name@example.com" value="{{ old('email') }}" required autofocus />

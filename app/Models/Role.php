@@ -9,7 +9,9 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre'];
+    protected $table = 'tb_roles';
+
+    protected $fillable = ['nombre_rol', 'descripcion_rol'];
 
     public function users()
     {
