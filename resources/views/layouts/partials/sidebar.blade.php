@@ -21,7 +21,7 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 Tarifas
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('lecturas.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                 Lecturas
             </a>
