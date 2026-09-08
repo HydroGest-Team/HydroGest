@@ -5,6 +5,7 @@ use App\Http\Controllers\LecturaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\TarifaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -39,5 +40,10 @@ Route::middleware(['auth', 'role:Administrador,Secretaria,Empleado'])->group(fun
 Route::middleware(['auth', 'role:Administrador,Secretaria'])->group(function () {
     Route::resource('pagos', PagoController::class)->only(['create', 'store']);
 });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('pagos', PagoController::class)
+    ->only(['index', 'create', 'store']);
 
 require __DIR__.'/auth.php';

@@ -4,12 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PagoRequest;
 use App\Models\Lectura;
+use App\Models\Pago;
+use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
-    /**
-     * Muestra el formulario para registrar un pago de una lectura específica.
-     */
+    public function index(Request $request)
+    {
+        $query = Pago::with(['lectura.contador.cliente'])
+            ->orderByDesc('fecha_pago');
+
+        if ($request->filled('cliente')) {
+            $query->whereHas('lectura.contador.cliente', function ($q) use ($request) {
+                $q->where('nombre1_cliente', 'like', '%' . $request->cliente . '%')
+                  ->orWhere('apellido1_cliente', 'like', '%' . $request->cliente . '%');
+            });
+        }
+
+        if ($request->filled('estado_pago')) {
+            $query->where('estado_pago', $request->estado_pago);
+        }
+
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_pago', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_pago', '<=', $request->fecha_hasta);
+        }
+
+        $pagos = $query->paginate(15)->withQueryString();
+
+        return view('pagos.index', compact('pagos'));
+    }
+
     public function create()
     {
         $lecturaId = request('lectura_id');
@@ -25,12 +53,6 @@ class PagoController extends Controller
         return view('pagos.create', compact('lectura'));
     }
 
-    /**
-     * Registra un pago para una lectura. Setea estado_pago = 'PAGADO'.
-     *
-     * Decisión I1/I2: el pago se crea con estado 'PAGADO' porque la
-     * Secretaria lo registra cuando el cliente ya pagó en ese momento.
-     */
     public function store(PagoRequest $request)
     {
         $lectura = Lectura::with('pago')->findOrFail($request->lecturas_id);
