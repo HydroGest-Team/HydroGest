@@ -47,5 +47,15 @@
 
 ## Pendiente de Sprint 3
 
-- Dashboard con tabla de clientes filtrable (Al día/Pendiente)
+## Dashboard y Pagos (Sprint 3, en progreso)
+
+- `dashboard.blade.php`: tarjetas de resumen (total clientes, al día, pendientes, fecha) + tabla de clientes con filtro por nombre y estado, 100% client-side (JavaScript con data-attributes, sin recargar página). Asume que `$clientes` trae un campo `estado` ('Al día'/'Pendiente') — pendiente de `DashboardController` real (bloqueante, ruta actual sigue siendo placeholder en `web.php`).
+- `pagos/index.blade.php`: listado de pagos con filtros (cliente, estado, rango de fechas) vía query string GET, enlace directo al recibo de cada pago. Pendiente de `PagoController@index()` y la ruta `pagos.index` — reportado a I3.
+- Sidebar actualizado: enlace de Pagos agregado (`route('pagos.index')`), listo para cuando exista la ruta.
+
+### Bloqueantes activos
+| Pendiente | Módulo | Responsable |
+|---|---|---|
+| `DashboardController@index()` con `$clientes` y estado calculado | Dashboard | Por definir |
+| `PagoController@index()` + ruta `pagos.index` con filtros | Pagos | I3 |
 - Despliegue en AWS EC2
