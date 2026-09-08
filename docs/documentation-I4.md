@@ -1,8 +1,61 @@
-## 27 al 30 de agosto
+# HidroGest — Resumen de Frontend (Integrante 4)
 
-- **Sprint 1 — SCRUM-2 (Frontend):** Layout base integrado con la plantilla **SB Admin** (Bootstrap 5). Navbar, sidebar y footer funcionando como partials reutilizables (`layouts/partials/`). Dashboard de prueba cargando correctamente en `/dashboard`.
-- Rutas de módulos (Clientes, Contadores, Tarifas, Lecturas, Pagos) en el sidebar están como placeholders (`#`) hasta que se implementen en Sprint 2 — actualizar con `route()` cuando estén listas.
+## Sprint 1 — Layout base y autenticación (26-28 ago)
 
-- **Sprint 1 — SCRUM-14 (Frontend):** Layout base integrado con la plantilla **SB Admin** (Bootstrap 5). Navbar, sidebar y footer funcionando como partials reutilizables (`layouts/partials/`). Dashboard de prueba cargando correctamente en `/dashboard`.
-- **Vista de login y bienvenida por rol:** Layout de autenticación separado (`layouts/guest.blade.php`) centrado en pantalla. Vista de login en `resources/views/auth/login.blade.php` (path esperado por Laravel Breeze). Vista de bienvenida post-login (`bienvenida.blade.php`) con contenido condicional según rol (admin / secretaria / lector).
-- Rutas de módulos (Clientes, Contadores, Tarifas, Lecturas, Pagos) y acciones de login/logout están como placeholders (`#`) hasta que se implemente la autenticación real (Breeze recomendado, pendiente de confirmación del equipo) y las rutas de I2/I3 en Sprint 2.
+**Plantilla:** SB Admin (Bootstrap 5), integrada en `layouts/app.blade.php` con navbar, sidebar y footer como partials reutilizables (`layouts/partials/`).
+
+**Login y bienvenida:**
+- `layouts/guest.blade.php`: layout separado para páginas de autenticación (sin sidebar), centrado vertical y horizontal en pantalla.
+- `auth/login.blade.php`: vista de login en el path estándar que espera Laravel Breeze.
+- `bienvenida.blade.php`: contenido condicional según rol del usuario (Administrador / Secretaria / Empleado, según el enum real de `tb_roles.nombre_rol`).
+
+## Sprint 2 — CRUDs de Clientes, Contadores y Tarifas
+
+**Patrón de diseño:** modal Bootstrap compartido para crear/editar en cada módulo (Clientes y Contadores), evitando duplicar formularios en páginas separadas. Tarifas usa modal solo de creación, sin edición (histórico inmutable).
+
+- `clientes/index.blade.php`: tabla + modal, conectado a `ClienteController`.
+- `contadores/index.blade.php`: tabla + modal, con botón de toggle activo/inactivo, conectado a `ContadorController`.
+- `tarifas/index.blade.php`: tabla histórica con indicador Vigente/Vencida + modal de creación, conectado a `TarifaController`.
+
+## Sprint 3 — Lecturas, recibo, pagos y dashboard
+
+- `lecturas/index.blade.php`: registro de lectura mobile-first (una tarjeta por contador pendiente, teclado numérico, input grande).
+- `lecturas/show.blade.php`: recibo imprimible con `@media print` (sin librerías externas, Ctrl+P nativo).
+- `pagos/create.blade.php`: formulario de registro de pago con resumen del recibo.
+- Dashboard: *(pendiente / en progreso)*.
+
+## Bugs encontrados y su estado
+
+| Bug | Módulo | Estado |
+|---|---|---|
+| `$clienteId` capturaba el objeto `Cliente` completo en vez de `->id` en `ClienteRequest` | Clientes | Corregido por I2 |
+| ENUM real `activo_cliente` es `['Activo','Inactivo']`, no `'ACTIVO'/'NO ACTIVO'` | Clientes | Corregido en vistas y en `ClienteRequest` |
+| `$fillable`/`$casts` de `Contador.php` no coincidían con la migración | Contadores | Corregido por I2 |
+| `ContadorController` filtraba clientes con `'ACTIVO'` en vez de `'Activo'` | Contadores | Corregido |
+| `TipoTarifa.php` no existía | Tarifas | Creado |
+| `TarifaController@index()` no pasa `$tipos` al `compact()` | Tarifas | Pendiente |
+| `Tarifa::vigenteEn()` vs `vigente()` — mismatch de nombre | Lecturas | Pendiente |
+| Falta columna `remember_token` en `tb_usuarios` | Login | Pendiente |
+| Error crudo de SQL al reenviar lectura duplicada | Lecturas | Mejora sugerida |
+
+## Convenciones del proyecto
+
+- Ramas: `SCRUM-XX-descripcion-corta`
+- Commits: `SCRUM-XX: feat/fix/chore descripción`
+- Rutas y vistas en plural (`clientes`, `contadores`, `tarifas`, `lecturas`, `pagos`), siguiendo `Route::resource`
+- Frontend nunca escribe queries ni toca migraciones — solo consume datos ya preparados por los controladores
+
+## Pendiente de Sprint 3
+
+## Dashboard y Pagos (Sprint 3, en progreso)
+
+- `dashboard.blade.php`: tarjetas de resumen (total clientes, al día, pendientes, fecha) + tabla de clientes con filtro por nombre y estado, 100% client-side (JavaScript con data-attributes, sin recargar página). Asume que `$clientes` trae un campo `estado` ('Al día'/'Pendiente') — pendiente de `DashboardController` real (bloqueante, ruta actual sigue siendo placeholder en `web.php`).
+- `pagos/index.blade.php`: listado de pagos con filtros (cliente, estado, rango de fechas) vía query string GET, enlace directo al recibo de cada pago. Pendiente de `PagoController@index()` y la ruta `pagos.index` — reportado a I3.
+- Sidebar actualizado: enlace de Pagos agregado (`route('pagos.index')`), listo para cuando exista la ruta.
+
+### Bloqueantes activos
+| Pendiente | Módulo | Responsable |
+|---|---|---|
+| `DashboardController@index()` con `$clientes` y estado calculado | Dashboard | Por definir |
+| `PagoController@index()` + ruta `pagos.index` con filtros | Pagos | I3 |
+- Despliegue en AWS EC2
