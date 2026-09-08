@@ -2,6 +2,7 @@
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ContadorController;
 use App\Http\Controllers\LecturaController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\TarifaController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +33,11 @@ Route::middleware(['auth', 'role:Administrador,Empleado'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:Administrador,Secretaria,Empleado'])->group(function () {
-    Route::resource('lecturas', LecturaController::class)->only(['index', 'store']);
+    Route::resource('lecturas', LecturaController::class)->only(['index', 'store', 'show']);
+});
+
+Route::middleware(['auth', 'role:Administrador,Secretaria'])->group(function () {
+    Route::resource('pagos', PagoController::class)->only(['create', 'store']);
 });
 
 require __DIR__.'/auth.php';

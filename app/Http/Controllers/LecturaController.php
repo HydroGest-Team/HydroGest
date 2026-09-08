@@ -96,8 +96,18 @@ class LecturaController extends Controller
             'periodo_id'       => $request->periodo_id,
         ]);
 
-        return redirect()->route('lecturas.index')
+        return redirect()->route('lecturas.show', $lectura)
             ->with('success', "Lectura registrada. Consumo: {$consumo}, Monto: Q{$monto}.");
+    }
+
+    /**
+     * Muestra el recibo de una lectura con sus relaciones.
+     */
+    public function show(Lectura $lectura)
+    {
+        $lectura->load(['contador', 'periodo', 'tarifa', 'pago']);
+
+        return view('lecturas.show', compact('lectura'));
     }
 
     private function generarNumeroRecibo(): string

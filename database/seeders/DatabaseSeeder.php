@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ContadorSeeder::class,
             PeriodoSeeder::class,
             LecturaSeeder::class,
+            PagoSeeder::class,
         ]);
     }
 }
