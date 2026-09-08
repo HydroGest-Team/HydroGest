@@ -9,10 +9,12 @@ class Lectura extends Model
     protected $table = 'tb_lecturas';
 
     protected $fillable = [
+        'numero_recibo',
         'contador_id',
         'periodo_id',
         'lectura_anterior',
         'lectura_actual',
+        // consumo: columna generada (storedAs), no va aquí
         'tarifa_id',
         'monto',
         'fecha_lectura',
@@ -27,15 +29,16 @@ class Lectura extends Model
         'monto'            => 'decimal:2',
     ];
 
-    public function contador()     { return $this->belongsTo(Contador::class, 'contador_id'); }
-    public function periodo()      { return $this->belongsTo(Periodo::class, 'periodo_id'); }
-    public function tarifa()       { return $this->belongsTo(Tarifa::class, 'tarifa_id'); }
-    public function usuario()      { return $this->belongsTo(User::class, 'usuario_id'); }
-    public function pago()         { return $this->hasOne(Pago::class, 'lectura_id'); }
+    public function contador() { return $this->belongsTo(Contador::class, 'contador_id'); }
+    public function periodo()  { return $this->belongsTo(Periodo::class, 'periodo_id'); }
+    public function tarifa()   { return $this->belongsTo(Tarifa::class, 'tarifa_id'); }
+    public function usuario()  { return $this->belongsTo(User::class, 'usuario_id'); }
+    public function pago()     { return $this->hasOne(Pago::class, 'lecturas_id'); }
 
     public function getNumeroReciboAttribute(): string
     {
-        return 'REC-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
+        return $this->attributes['numero_recibo']
+            ?? 'REC-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
     }
 
     public function getEstadoPagoAttribute(): string
