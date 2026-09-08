@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ContadorController;
+use App\Http\Controllers\LecturaController;
 use App\Http\Controllers\TarifaController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::middleware(['auth', 'role:Administrador,Secretaria,Empleado'])->group(fun
 
 Route::middleware(['auth', 'role:Administrador,Empleado'])->group(function () {
     Route::resource('tarifas', TarifaController::class)->only(['index', 'create', 'store', 'show']);
+});
+
+Route::middleware(['auth', 'role:Administrador,Secretaria,Empleado'])->group(function () {
+    Route::resource('lecturas', LecturaController::class)->only(['index']);
 });
 
 require __DIR__.'/auth.php';

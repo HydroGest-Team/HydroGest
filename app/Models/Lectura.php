@@ -1,36 +1,60 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 class Lectura extends Model
 {
     use HasFactory;
+
+    protected $table = 'tb_lecturas';
+
     protected $fillable = [
-        'contador_id',
-        'tarifa_id',
+        'numero_recibo',
         'lectura_anterior',
         'lectura_actual',
-        'consumo',
+        // 'consumo' NO va aquí: es columna generada (storedAs) en la migración.
         'monto',
-        'fecha',
-        'registrado_por',
-        'estado',
+        'fecha_lectura',
+        'tarifa_id',
+        'usuario_id',
+        'contador_id',
+        'periodo_id',
     ];
+
+    protected $casts = [
+        'lectura_anterior' => 'decimal:2',
+        'lectura_actual'   => 'decimal:2',
+        'consumo'          => 'decimal:2',
+        'monto'            => 'decimal:2',
+        'fecha_lectura'    => 'datetime',
+    ];
+
     public function contador()
     {
-        return $this->belongsTo(Contador::class);
+        return $this->belongsTo(Contador::class, 'contador_id');
     }
+
     public function tarifa()
     {
-        return $this->belongsTo(Tarifa::class);
+        return $this->belongsTo(Tarifa::class, 'tarifa_id');
     }
+
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'registrado_por');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
+
+    public function periodo()
+    {
+        return $this->belongsTo(Periodo::class, 'periodo_id');
+    }
+
     public function pago()
     {
-        return $this->hasOne(Pago::class);
+        return $this->hasOne(Pago::class, 'lecturas_id');
     }
 
     public static function calcularMonto($lecturaAnterior, $lecturaActual, $fecha)
