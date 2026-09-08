@@ -15,7 +15,7 @@ class TarifaController extends Controller
             ->orderByDesc('vigente_desde')
             ->paginate(15);
         $tipos   = TipoTarifa::orderBy('nombre_tipo')->get();
-        return view('tarifas.index', compact('tarifas'));
+        return view('tarifas.index', compact('tarifas', 'tipos'));
     }
 
     public function create()
