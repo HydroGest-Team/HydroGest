@@ -32,7 +32,7 @@ Route::middleware(['auth', 'role:Administrador,Empleado'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:Administrador,Secretaria,Empleado'])->group(function () {
-    Route::resource('lecturas', LecturaController::class)->only(['index']);
+    Route::resource('lecturas', LecturaController::class)->only(['index', 'store']);
 });
 
 require __DIR__.'/auth.php';
