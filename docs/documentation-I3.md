@@ -39,6 +39,21 @@
 
 **LecturaController::show()** — carga `contador`, `periodo`, `tarifa`, `pago` y devuelve `lecturas.show`.
 
+### Pruebas realizadas (Sprint 3, Tinker sobre BD real con seed 13/13 + PagoSeeder)
+- `migrate:fresh --seed` completo sin errores (incluye PagoSeeder) ✅
+- L1 (con pago del seeder): `estado_pago = PAGADO` ✅
+- L3 (sin pago): `estado_pago = PENDIENTE` ✅
+- `$lectura->pago()->create([... estado_pago='PAGADO'])` → estado cambia a PAGADO ✅
+- Validación `unique` en `lecturas_id`: rechaza pago duplicado ("Esta lectura ya tiene un pago registrado.") ✅
+- Validación `monto_pago` negativo → rechazado ("El monto no puede ser negativo.") ✅
+- Validación `metodo_pago` inválido (Cheque) → rechazado ("El método de pago debe ser Efectivo, Crédito o Débito.") ✅
+- Validación `lecturas_id` inexistente → rechazado ("La lectura seleccionada no existe.") ✅
+- `route:list` → rutas `lecturas.show`, `pagos.create`, `pagos.store` registradas ✅
+
+### Pruebas manuales pendientes (requieren vistas de I4)
+- Flujo en navegador: registrar lectura → recibo (`lecturas.show`) → enlace a `pagos.create?lectura_id={id}` → `pagos.store`.
+- Primera lectura (anterior = 0), lectura normal, consumo = 0 (rechazado por validación `lectura_actual > lectura_anterior`).
+
 ### Pendientes / dependencias (Sprint 3)
 - **I4:** crear las vistas `resources/views/lecturas/show.blade.php` (recibo) y `resources/views/pagos/create.blade.php` (form).
   - Recibo: muestra datos de la lectura (número recibo, cliente, contador, consumo, monto, estado) y enlace a `pagos.create?lectura_id={id}`.
