@@ -6,6 +6,7 @@ use App\Http\Requests\LecturaRequest;
 use App\Models\Contador;
 use App\Models\Lectura;
 use App\Models\Periodo;
+use App\Models\Tarifa;
 use Illuminate\Validation\ValidationException;
 
 class LecturaController extends Controller
@@ -50,8 +51,8 @@ class LecturaController extends Controller
     }
 
     /**
-     * Registra una nueva lectura: valida, calcula consumo y monto con el
-     * motor de I1 (Lectura::calcularMonto) y guarda.
+     * Registra una nueva lectura: valida, calcula consumo y monto con la
+     * tarifa vigente (Tarifa::vigenteEn) y guarda.
      *
      * NOTA (P4 confirmado): tb_lecturas NO tiene columna estado. El estado
      * "pendiente/pagada" se deriva de la existencia de un Pago asociado.
@@ -72,28 +73,31 @@ class LecturaController extends Controller
             ]);
         }
 
-        try {
-            $resultado = Lectura::calcularMonto($lecturaAnterior, $request->lectura_actual, now());
-        } catch (\Exception $e) {
+        $tarifa = Tarifa::vigenteEn(now());
+
+        if (!$tarifa) {
             throw ValidationException::withMessages([
                 'tarifa' => 'No hay una tarifa vigente configurada para esta fecha. Contacta al Administrador.',
             ]);
         }
 
+        $consumo = $request->lectura_actual - $lecturaAnterior;
+        $monto = $consumo * $tarifa->monto_por_unidad;
+
         $lectura = Lectura::create([
             'numero_recibo'    => $this->generarNumeroRecibo(),
             'lectura_anterior' => $lecturaAnterior,
             'lectura_actual'   => $request->lectura_actual,
-            'monto'            => $resultado['monto'],
+            'monto'            => $monto,
             'fecha_lectura'    => now(),
-            'tarifa_id'        => $resultado['tarifa_id'],
+            'tarifa_id'        => $tarifa->id,
             'usuario_id'       => auth()->id(),
             'contador_id'      => $contador->id,
             'periodo_id'       => $request->periodo_id,
         ]);
 
         return redirect()->route('lecturas.index')
-            ->with('success', "Lectura registrada. Consumo: {$resultado['consumo']}, Monto: Q{$resultado['monto']}.");
+            ->with('success', "Lectura registrada. Consumo: {$consumo}, Monto: Q{$monto}.");
     }
 
     private function generarNumeroRecibo(): string

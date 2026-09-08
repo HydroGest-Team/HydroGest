@@ -4,7 +4,7 @@
 
 ### Alcance
 - **SCRUM-25** — `LecturaController::index()`: listar contadores pendientes de lectura del período actual con su última lectura registrada (o 0 si es la primera).
-- **SCRUM-26** — `LecturaController::store()`: validar `lectura_actual > lectura_anterior`, calcular consumo, usar el motor de I1, calcular monto y guardar la lectura.
+- **SCRUM-26** — `LecturaController::store()`: validar `lectura_actual > lectura_anterior`, calcular consumo, usar `Tarifa::vigenteEn()` (decisión I1/I2 tras el bloqueo), calcular monto y guardar la lectura.
 - Documentación (this bitácora + actualización del README del trait).
 
 ### Decisiones de negocio confirmadas
@@ -16,12 +16,12 @@
 | P4 | ¿Columna `estado` en Lectura? | NO. El estado "pendiente/pagada" se deriva de la existencia de un Pago (`tb_pagos.Estado_Pago`) | I1/I2 |
 
 ### Archivos (Sprint 2)
-- `app/Models/Lectura.php` — reescrito: tabla `tb_lecturas`, fillable sin `consumo` (storedAs) y sin `estado`; relaciones `contador`, `tarifa`, `usuario`, `periodo`, `pago`; conserva `calcularMonto()` de I1.
+- `app/Models/Lectura.php` — reescrito en develop por I2/I4: tabla `tb_lecturas`, fillable con `numero_recibo` y sin `consumo` (storedAs) ni `estado`; relaciones `contador`, `tarifa`, `usuario`, `periodo`, `pago` (FK `lecturas_id`); accessors `numero_recibo` y `estado_pago`. **No** tiene `calcularMonto()` (decisión I1/I2).
 - `app/Models/Periodo.php` — nuevo: tabla `tb_periodos`, `scopeActivo()` → `estado_periodo = 'ACTIVO'`.
 - `app/Http/Requests/LecturaRequest.php` — nuevo: validación de `contador_id`, `periodo_id`, `lectura_actual` con mensajes en español.
 - `app/Http/Controllers/LecturaController.php` — nuevo: `index()` y `store()`.
 - `routes/web.php` — `Route::resource('lecturas', ...)->only(['index','store'])` con middleware `auth` + `role:Administrador,Secretaria,Empleado`.
-- `app/Traits/README.md` — se marca `BuscaTarifaVigente` como SUSPENDIDO/fallback (reemplazado por el motor de I1).
+- `app/Traits/README.md` — se marca `BuscaTarifaVigente` como SUSPENDIDO/fallback (reemplazado por `Tarifa::vigenteEn()` directo en el controller).
 
 ### Implementación
 
@@ -35,14 +35,14 @@
 1. Valida con `LecturaRequest` (exists en tablas + lectura_actual numérica ≥ 0).
 2. Busca la última lectura del contador → `lecturaAnterior` (0 si no hay).
 3. Fuerza `lectura_actual > lectura_anterior` (si no, `ValidationException`).
-4. Llama al motor de I1 `Lectura::calcularMonto($lecturaAnterior, $request->lectura_actual, now())` (si no hay tarifa vigente, excepción → error de validación amigable).
-5. Genera `numero_recibo` (`REC-YYYYMMDD-NNNNN`), guarda con `usuario_id = auth()->id()`.
+4. Calcula consumo (`lectura_actual - lectura_anterior`) y monto con la tarifa vigente: `Tarifa::vigenteEn(now())`; si no hay tarifa, error de validación amigable (`tarifa`).
+5. Genera `numero_recibo` (`REC-YYYYMMDD-NNNNN`) y lo guarda en la columna (ya en `$fillable`, decisión I2), con `usuario_id = auth()->id()`.
 6. NO escribe `consumo` (lo calcula la BD, storedAs) ni `estado` (P4).
 
 ### Pruebas (bd local, migraciones 13/13)
 Ejecutadas con Tinker sobre MariaDB (instancia portable puerto 3307):
 - `Periodo::activo()` → devuelve el período ACTIVO ✅
-- `Lectura::calcularMonto(0, 15, now())` → consumo 15, monto 82.50, tarifa_id 1 ✅
+- `Tarifa::vigenteEn(now())` → tarifa vigente (monto_por_unidad) ✅
 - Alta de lectura → `consumo` calculado por la BD (15.00 tras `refresh()`), recibo `REC-20260907-00001`, unique `(contador_id, periodo_id)` OK ✅
 - `index()` → contador con lectura en el período se excluye; contador sin lectura aparece con anterior=0 ✅
 
