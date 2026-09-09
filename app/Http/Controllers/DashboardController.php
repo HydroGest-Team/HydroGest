@@ -16,7 +16,7 @@ class DashboardController extends Controller
                     fn($lectura) => is_null($lectura->pago)
                 )->count();
 
-                $cliente->estado     = $pendientes > 0 ? 'PENDIENTE' : 'AL DÍA';
+                $cliente->estado = $pendientes > 0 ? 'Pendiente' : 'Al dia';
                 $cliente->pendientes = $pendientes;
                 return $cliente;
             });
