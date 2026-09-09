@@ -31,7 +31,8 @@
                 <div class="row align-items-center">
                     <div class="col me-2">
                         <div class="text-xs fw-bold text-success text-uppercase mb-1">Al día</div>
-                        <div class="h5 mb-0 fw-bold text-gray-800">{{ $clientes->where('estado', 'Al día')->count() }}</div>
+                        {{-- FIX I1: 'Al día' -> 'Al dia' para coincidir con DashboardController --}}
+                        <div class="h5 mb-0 fw-bold text-gray-800">{{ $clientes->where('estado', 'Al dia')->count() }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-check-circle fa-2x text-gray-300"></i>
@@ -80,7 +81,8 @@
             <input type="text" id="filtroNombre" class="form-control form-control-sm" placeholder="Buscar por nombre..." style="width: 220px;">
             <select id="filtroEstado" class="form-select form-select-sm" style="width: 160px;">
                 <option value="">Todos los estados</option>
-                <option value="Al día">Al día</option>
+                {{-- FIX I1: value="Al día" -> value="Al dia" para coincidir con DashboardController --}}
+                <option value="Al dia">Al día</option>
                 <option value="Pendiente">Pendiente</option>
             </select>
         </div>
@@ -100,7 +102,8 @@
                     <td>{{ $cliente->nombre_completo }}</td>
                     <td>{{ $cliente->telefono_cliente }}</td>
                     <td>
-                        @if ($cliente->estado === 'Al día')
+                        {{-- FIX I1: 'Al día' -> 'Al dia' para coincidir con DashboardController --}}
+                        @if ($cliente->estado === 'Al dia')
                         <span class="badge bg-success">Al día</span>
                         @else
                         <span class="badge bg-danger">Pendiente</span>
