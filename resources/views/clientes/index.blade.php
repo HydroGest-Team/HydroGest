@@ -21,62 +21,64 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Nombre completo</th>
-                    <th>DPI</th>
-                    <th>Teléfono</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($clientes as $cliente)
-                <tr>
-                    <td>{{ $cliente->nombre_completo }}</td>
-                    <td>{{ $cliente->dpi_cliente }}</td>
-                    <td>{{ $cliente->telefono_cliente }}</td>
-                    <td>
-                        @if ($cliente->activo_cliente === 'Activo')
-                        <span class="badge bg-success">Activo</span>
-                        @else
-                        <span class="badge bg-secondary">No activo</span>
-                        @endif
-                    </td>
-                    <td>
-                        <button
-                            class="btn btn-sm btn-outline-primary btn-editar-cliente"
-                            data-bs-toggle="modal"
-                            data-bs-target="#clienteModal"
-                            data-id="{{ $cliente->id }}"
-                            data-dpi="{{ $cliente->dpi_cliente }}"
-                            data-nombre1="{{ $cliente->nombre1_cliente }}"
-                            data-nombre2="{{ $cliente->nombre2_cliente }}"
-                            data-nombre3="{{ $cliente->nombre3_cliente }}"
-                            data-apellido1="{{ $cliente->apellido1_cliente }}"
-                            data-apellido2="{{ $cliente->apellido2_cliente }}"
-                            data-apellido3="{{ $cliente->apellido3_cliente }}"
-                            data-telefono="{{ $cliente->telefono_cliente }}"
-                            data-direccion="{{ $cliente->direccion_cliente }}"
-                            data-cuenta="{{ $cliente->numero_cuenta_cliente }}"
-                            data-activo="{{ $cliente->activo_cliente }}">
-                            Editar
-                        </button>
-                        <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este cliente?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="text-center text-muted">No hay clientes registrados.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre completo</th>
+                        <th>DPI</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($clientes as $cliente)
+                    <tr>
+                        <td>{{ $cliente->nombre_completo }}</td>
+                        <td>{{ $cliente->dpi_cliente }}</td>
+                        <td>{{ $cliente->telefono_cliente }}</td>
+                        <td>
+                            @if ($cliente->activo_cliente === 'Activo')
+                            <span class="badge bg-success">Activo</span>
+                            @else
+                            <span class="badge bg-secondary">No activo</span>
+                            @endif
+                        </td>
+                        <td>
+                            <button
+                                class="btn btn-sm btn-outline-primary btn-editar-cliente"
+                                data-bs-toggle="modal"
+                                data-bs-target="#clienteModal"
+                                data-id="{{ $cliente->id }}"
+                                data-dpi="{{ $cliente->dpi_cliente }}"
+                                data-nombre1="{{ $cliente->nombre1_cliente }}"
+                                data-nombre2="{{ $cliente->nombre2_cliente }}"
+                                data-nombre3="{{ $cliente->nombre3_cliente }}"
+                                data-apellido1="{{ $cliente->apellido1_cliente }}"
+                                data-apellido2="{{ $cliente->apellido2_cliente }}"
+                                data-apellido3="{{ $cliente->apellido3_cliente }}"
+                                data-telefono="{{ $cliente->telefono_cliente }}"
+                                data-direccion="{{ $cliente->direccion_cliente }}"
+                                data-cuenta="{{ $cliente->numero_cuenta_cliente }}"
+                                data-activo="{{ $cliente->activo_cliente }}">
+                                Editar
+                            </button>
+                            <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este cliente?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No hay clientes registrados.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         {{ $clientes->links() }}
     </div>
 </div>

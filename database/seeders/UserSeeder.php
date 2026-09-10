@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name'       => 'Secretaria Demo',
+                'name'       => 'Secretaria',
                 'email'      => 'secretaria@hidrogest.test',
                 'password'   => Hash::make('password'),
                 'role_id'    => 2,
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name'       => 'Lector Campo',
+                'name'       => 'Lector',
                 'email'      => 'lector@hidrogest.test',
                 'password'   => Hash::make('password'),
                 'role_id'    => 3,
