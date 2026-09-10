@@ -21,64 +21,66 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Sector</th>
-                    <th>Cliente asignado</th>
-                    <th>Fecha instalación</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($contadores as $contador)
-                <tr>
-                    <td>{{ $contador->codigo_contador }}</td>
-                    <td>{{ $contador->sector_contador }}</td>
-                    <td>{{ $contador->cliente->nombre_completo ?? '—' }}</td>
-                    <td>{{ $contador->fecha_instalacion?->format('d/m/Y') ?? '—' }}</td>
-                    <td>
-                        @if ($contador->activo_contador === 'ACTIVO')
-                        <span class="badge bg-success">Activo</span>
-                        @else
-                        <span class="badge bg-secondary">No activo</span>
-                        @endif
-                    </td>
-                    <td>
-                        <button
-                            class="btn btn-sm btn-outline-primary btn-editar-contador"
-                            data-bs-toggle="modal"
-                            data-bs-target="#contadorModal"
-                            data-id="{{ $contador->id }}"
-                            data-codigo="{{ $contador->codigo_contador }}"
-                            data-sector="{{ $contador->sector_contador }}"
-                            data-fecha="{{ $contador->fecha_instalacion?->format('Y-m-d') }}"
-                            data-cliente="{{ $contador->cliente_id }}">
-                            Editar
-                        </button>
-                        <form action="{{ route('contadores.toggle', $contador->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-sm btn-outline-warning">
-                                {{ $contador->activo_contador === 'ACTIVO' ? 'Desactivar' : 'Activar' }}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Sector</th>
+                        <th>Cliente asignado</th>
+                        <th>Fecha instalación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($contadores as $contador)
+                    <tr>
+                        <td>{{ $contador->codigo_contador }}</td>
+                        <td>{{ $contador->sector_contador }}</td>
+                        <td>{{ $contador->cliente->nombre_completo ?? '—' }}</td>
+                        <td>{{ $contador->fecha_instalacion?->format('d/m/Y') ?? '—' }}</td>
+                        <td>
+                            @if ($contador->activo_contador === 'ACTIVO')
+                            <span class="badge bg-success">Activo</span>
+                            @else
+                            <span class="badge bg-secondary">No activo</span>
+                            @endif
+                        </td>
+                        <td>
+                            <button
+                                class="btn btn-sm btn-outline-primary btn-editar-contador"
+                                data-bs-toggle="modal"
+                                data-bs-target="#contadorModal"
+                                data-id="{{ $contador->id }}"
+                                data-codigo="{{ $contador->codigo_contador }}"
+                                data-sector="{{ $contador->sector_contador }}"
+                                data-fecha="{{ $contador->fecha_instalacion?->format('Y-m-d') }}"
+                                data-cliente="{{ $contador->cliente_id }}">
+                                Editar
                             </button>
-                        </form>
-                        <form action="{{ route('contadores.destroy', $contador->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este contador?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center text-muted">No hay contadores registrados.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                            <form action="{{ route('contadores.toggle', $contador->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm btn-outline-warning">
+                                    {{ $contador->activo_contador === 'ACTIVO' ? 'Desactivar' : 'Activar' }}
+                                </button>
+                            </form>
+                            <form action="{{ route('contadores.destroy', $contador->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este contador?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No hay contadores registrados.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         {{ $contadores->links() }}
     </div>
 </div>

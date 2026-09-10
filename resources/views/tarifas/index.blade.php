@@ -27,40 +27,42 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Monto por unidad</th>
-                    <th>Cantidad paja</th>
-                    <th>Vigente desde</th>
-                    <th>Vigente hasta</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($tarifas as $tarifa)
-                <tr>
-                    <td>{{ $tarifa->tipoTarifa->nombre_tipo ?? '—' }}</td>
-                    <td>Q{{ number_format($tarifa->monto_por_unidad, 2) }}</td>
-                    <td>{{ $tarifa->cantidad_paja ?? '—' }}</td>
-                    <td>{{ $tarifa->vigente_desde->format('d/m/Y') }}</td>
-                    <td>{{ $tarifa->vigente_hasta?->format('d/m/Y') ?? '—' }}</td>
-                    <td>
-                        @if (is_null($tarifa->vigente_hasta))
-                        <span class="badge bg-success">Vigente</span>
-                        @else
-                        <span class="badge bg-secondary">Vencida</span>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center text-muted">No hay tarifas registradas.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Monto por unidad</th>
+                        <th>Cantidad paja</th>
+                        <th>Vigente desde</th>
+                        <th>Vigente hasta</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($tarifas as $tarifa)
+                    <tr>
+                        <td>{{ $tarifa->tipoTarifa->nombre_tipo ?? '—' }}</td>
+                        <td>Q{{ number_format($tarifa->monto_por_unidad, 2) }}</td>
+                        <td>{{ $tarifa->cantidad_paja ?? '—' }}</td>
+                        <td>{{ $tarifa->vigente_desde->format('d/m/Y') }}</td>
+                        <td>{{ $tarifa->vigente_hasta?->format('d/m/Y') ?? '—' }}</td>
+                        <td>
+                            @if (is_null($tarifa->vigente_hasta))
+                            <span class="badge bg-success">Vigente</span>
+                            @else
+                            <span class="badge bg-secondary">Vencida</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No hay tarifas registradas.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         {{ $tarifas->links() }}
     </div>
 </div>
