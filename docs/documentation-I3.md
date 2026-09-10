@@ -12,10 +12,10 @@ del módulo.
 ## Sprint 1 — Fundamentos y preparación
 
 ### Alcance
-| # | Actividad | Puntos | Estado |
+| # | Actividad |Tiempo | Estado |
 |---|-----------|--------|--------|
-| 1 | Estudiar el patrón MVC de Laravel: CRUD de práctica simple (entidad de ejemplo, no del proyecto). Enfocar cómo el controlador pasa variables a la vista Blade con `compact()` o `with()`. | 2 | ✅ Completado |
-| 2 | Leer y entender la lógica de tarifa vigente que se usará en Sprint 2: cómo consultar la tarifa activa a una fecha dada con Eloquent. | 0.5 | ✅ Completado |
+| 1 | Estudiar el patrón MVC de Laravel: CRUD de práctica simple (entidad de ejemplo, no del proyecto). Enfocar cómo el controlador pasa variables a la vista Blade con `compact()` o `with()`. | 2 |  Completado |
+| 2 | Leer y entender la lógica de tarifa vigente que se usará en Sprint 2: cómo consultar la tarifa activa a una fecha dada con Eloquent. | 0.5 |  Completado |
 
 ### Qué se hizo
 - **CRUD de práctica (MVC):** se creó un CRUD sobre una entidad de ejemplo (fuera del
@@ -43,7 +43,7 @@ del módulo.
 ## Sprint 2 — CRUD de Lecturas (index + store)
 
 ### Alcance
-| # | Actividad | Puntos | Estado |
+| # | Actividad | Tiempo | Estado |
 |---|-----------|--------|--------|
 | 1 | `LecturaController::index()`: listar contadores pendientes de lectura del período actual con su última lectura registrada (o 0 si es la primera). | 1.5 |  Completado |
 | 2 | `LecturaController::store()`: validar `lectura_actual > lectura_anterior`, calcular consumo, buscar tarifa vigente (motor de I1), calcular monto y guardar Lectura con estado "pendiente". | 2 |  Completado |
@@ -133,7 +133,7 @@ trabajar sobre supuestos incorrectos:
 ## Sprint 3 — Pagos (PagoController + flujo de recibo)
 
 ### Alcance
-| # | Actividad | Puntos | Estado |
+| # | Actividad | Tiempo | Estado |
 |---|-----------|--------|--------|
 | 1 | `PagoController::store()`: recibir `lectura_id`, registrar Pago (monto, fecha, método) y actualizar lectura a "pagada". | 1.5 |  Completado |
 | 2 | Integrar el flujo: guardar lectura exitosa → redirigir a vista de recibo → enlace a registrar pago. Coordinar con I4 los nombres de las rutas. | 1 |  En backend (vistas dependen de I4) |
