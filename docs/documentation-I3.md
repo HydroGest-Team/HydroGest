@@ -1,6 +1,6 @@
 # Bitácora — Integrante 3 (Backend Dev: Lecturas y Pagos)
 
-**Autor:** Integrante 3 (I3) — Backend Dev (Lecturas y Pagos) · HydroGest
+**Autor:** Melki 3 (I3) — Backend Dev (Lecturas y Pagos) · HydroGest
 **Rol en el equipo:** Módulos de Lecturas y Pagos (controladores, requests, rutas, lógica de negocio y pruebas).
 
 Esta bitácora resume el trabajo realizado en los Sprints 1, 2 y 3, incluyendo las
@@ -45,8 +45,8 @@ del módulo.
 ### Alcance
 | # | Actividad | Puntos | Estado |
 |---|-----------|--------|--------|
-| 1 | `LecturaController::index()`: listar contadores pendientes de lectura del período actual con su última lectura registrada (o 0 si es la primera). | 1.5 | ✅ Completado |
-| 2 | `LecturaController::store()`: validar `lectura_actual > lectura_anterior`, calcular consumo, buscar tarifa vigente (motor de I1), calcular monto y guardar Lectura con estado "pendiente". | 2 | ✅ Completado |
+| 1 | `LecturaController::index()`: listar contadores pendientes de lectura del período actual con su última lectura registrada (o 0 si es la primera). | 1.5 |  Completado |
+| 2 | `LecturaController::store()`: validar `lectura_actual > lectura_anterior`, calcular consumo, buscar tarifa vigente (motor de I1), calcular monto y guardar Lectura con estado "pendiente". | 2 |  Completado |
 
 ### Decisiones de negocio confirmadas (P1–P4)
 Estas preguntas se elevaron al equipo (I1/I2) antes de implementar, para evitar
@@ -119,11 +119,11 @@ trabajar sobre supuestos incorrectos:
      y el `.env` apunta a `DB_PORT=3307`. Migraciones 13/13 aplicadas correctamente.
 
 ### Pruebas (Tinker sobre BD local)
-- `Periodo::activo()` → devuelve el período ACTIVO ✅
-- `Tarifa::vigenteEn(now())` → tarifa vigente (monto_por_unidad) ✅
+- `Periodo::activo()` → devuelve el período ACTIVO 
+- `Tarifa::vigenteEn(now())` → tarifa vigente (monto_por_unidad) 
 - Alta de lectura → `consumo` calculado por la BD (15.00 tras `refresh()`), recibo
-  `REC-20260907-00001`, unique `(contador_id, periodo_id)` respetado ✅
-- `index()` → contador con lectura en el período se excluye; contador sin lectura aparece con anterior=0 ✅
+  `REC-20260907-00001`, unique `(contador_id, periodo_id)` respetado 
+- `index()` → contador con lectura en el período se excluye; contador sin lectura aparece con anterior=0 
 
 ### Pendientes heredados
 - **I4:** crear la vista `resources/views/lecturas/index.blade.php` (recibe `$periodo` y `$contadores`).
@@ -135,9 +135,9 @@ trabajar sobre supuestos incorrectos:
 ### Alcance
 | # | Actividad | Puntos | Estado |
 |---|-----------|--------|--------|
-| 1 | `PagoController::store()`: recibir `lectura_id`, registrar Pago (monto, fecha, método) y actualizar lectura a "pagada". | 1.5 | ✅ Completado |
-| 2 | Integrar el flujo: guardar lectura exitosa → redirigir a vista de recibo → enlace a registrar pago. Coordinar con I4 los nombres de las rutas. | 1 | ✅ En backend (vistas dependen de I4) |
-| 3 | Pruebas manuales del módulo con datos del seeder: primera lectura (anterior=0), lectura normal, consumo=0. | — | ⏳ Parcial (backend validado; navegador requiere vistas de I4) |
+| 1 | `PagoController::store()`: recibir `lectura_id`, registrar Pago (monto, fecha, método) y actualizar lectura a "pagada". | 1.5 |  Completado |
+| 2 | Integrar el flujo: guardar lectura exitosa → redirigir a vista de recibo → enlace a registrar pago. Coordinar con I4 los nombres de las rutas. | 1 |  En backend (vistas dependen de I4) |
+| 3 | Pruebas manuales del módulo con datos del seeder: primera lectura (anterior=0), lectura normal, consumo=0. | — |  Parcial (backend validado; navegador requiere vistas de I4) |
 
 ### Decisiones de negocio confirmadas (S3-P1 a S3-P5)
 | ID | Pregunta | Respuesta | Quién |
@@ -195,15 +195,15 @@ trabajar sobre supuestos incorrectos:
    El backend está listo y validado; la prueba visual queda pendiente de las vistas de I4.
 
 ### Pruebas (Tinker sobre BD real, seed 13/13 + PagoSeeder)
-- `migrate:fresh --seed` completo sin errores (incluye PagoSeeder) ✅
-- L1 (con pago del seeder): `estado_pago = PAGADO` ✅
-- L3 (sin pago): `estado_pago = PENDIENTE` ✅
-- `$lectura->pago()->create([... estado_pago='PAGADO'])` → estado cambia a PAGADO ✅
-- Validación `unique` en `lecturas_id`: rechaza pago duplicado ("Esta lectura ya tiene un pago registrado.") ✅
-- Validación `monto_pago` negativo → rechazado ("El monto no puede ser negativo.") ✅
-- Validación `metodo_pago` inválido (Cheque) → rechazado ("El método de pago debe ser Efectivo, Crédito o Débito.") ✅
-- Validación `lecturas_id` inexistente → rechazado ("La lectura seleccionada no existe.") ✅
-- `route:list` → rutas `lecturas.show`, `pagos.create`, `pagos.store` registradas ✅
+- `migrate:fresh --seed` completo sin errores (incluye PagoSeeder) 
+- L1 (con pago del seeder): `estado_pago = PAGADO` 
+- L3 (sin pago): `estado_pago = PENDIENTE` 
+- `$lectura->pago()->create([... estado_pago='PAGADO'])` → estado cambia a PAGADO 
+- Validación `unique` en `lecturas_id`: rechaza pago duplicado ("Esta lectura ya tiene un pago registrado.") 
+- Validación `monto_pago` negativo → rechazado ("El monto no puede ser negativo.") 
+- Validación `metodo_pago` inválido (Cheque) → rechazado ("El método de pago debe ser Efectivo, Crédito o Débito.") 
+- Validación `lecturas_id` inexistente → rechazado ("La lectura seleccionada no existe.") 
+- `route:list` → rutas `lecturas.show`, `pagos.create`, `pagos.store` registradas 
 
 ### Pruebas manuales pendientes (requieren vistas de I4)
 - Flujo en navegador: registrar lectura → recibo (`lecturas.show`) → enlace a
