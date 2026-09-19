@@ -25,6 +25,10 @@
     <i class="fas fa-plus"></i> Nueva Tarifa
 </button>
 
+<a href="{{ route('lecturas.export') }}" class="btn btn-outline-success mb-3">
+    <i class="fas fa-file-csv"></i> Exportar CSV
+</a>
+
 <div class="card mb-4">
     <div class="card-body">
         <div class="table-responsive">

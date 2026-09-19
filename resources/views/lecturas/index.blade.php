@@ -8,6 +8,10 @@
     <li class="breadcrumb-item active">Lecturas</li>
 </ol>
 
+<a href="{{ route('lecturas.export') }}" class="btn btn-outline-success mb-3">
+    <i class="fas fa-file-csv"></i> Exportar CSV
+</a>
+
 @if (session('success'))
 <div class="alert alert-success">{{ session('success') }}</div>
 @endif

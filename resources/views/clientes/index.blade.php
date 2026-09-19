@@ -18,6 +18,9 @@
 <button class="btn btn-primary mb-3" id="btnNuevoCliente" data-bs-toggle="modal" data-bs-target="#clienteModal">
     <i class="fas fa-plus"></i> Nuevo Cliente
 </button>
+<a href="{{ route('clientes.export') }}" class="btn btn-outline-success mb-3">
+    <i class="fas fa-file-csv"></i> Exportar CSV
+</a>
 
 <div class="card mb-4">
     <div class="card-body">
