@@ -67,11 +67,16 @@
                                 data-activo="{{ $cliente->activo_cliente }}">
                                 Editar
                             </button>
-                            <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este cliente?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                            </form>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger btn-eliminar-cliente"
+                                data-bs-toggle="modal"
+                                data-bs-target="#eliminarClienteModal"
+                                data-id="{{ $cliente->id }}"
+                                data-nombre="{{ $cliente->nombre_completo }}"
+                            >
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -151,6 +156,29 @@
     </div>
 </div>
 
+{{-- Modal de confirmación para eliminar --}}
+<div class="modal fade" id="eliminarClienteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro que deseas eliminar a <strong id="eliminarClienteNombre"></strong>? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="eliminarClienteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     document.getElementById('btnNuevoCliente').addEventListener('click', function() {
@@ -175,6 +203,14 @@
             document.getElementById('cliente_direccion').value = d.direccion;
             document.getElementById('cliente_cuenta').value = d.cuenta;
             document.getElementById('cliente_activo').value = d.activo;
+        });
+    });
+
+    document.querySelectorAll('.btn-eliminar-cliente').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const d = btn.dataset;
+            document.getElementById('eliminarClienteNombre').innerText = d.nombre;
+            document.getElementById('eliminarClienteForm').action = "{{ url('clientes') }}/" + d.id;
         });
     });
 </script>
