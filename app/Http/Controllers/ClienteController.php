@@ -55,3 +55,27 @@ class ClienteController extends Controller
             ->with('success', 'Cliente eliminado correctamente.');
     }
 }
+
+//funcion para exportar clientes
+public function export()
+{
+    $clientes = Cliente::orderBy('apellido1_cliente')->get();
+    $filename = 'clientes_' . now()->format('Ymd_His') . '.csv';
+
+    return response()->streamDownload(function () use ($clientes) {
+        $handle = fopen('php://output', 'w');
+        fputs($handle, "\xEF\xBB\xBF"); // BOM: para que Excel abra bien los acentos
+        fputcsv($handle, ['DPI', 'Nombre completo', 'Teléfono', 'Dirección', 'Estado']);
+
+        foreach ($clientes as $c) {
+            fputcsv($handle, [
+                $c->dpi_cliente,
+                $c->nombre_completo,
+                $c->telefono_cliente,
+                $c->direccion_cliente,
+                $c->activo_cliente,
+            ]);
+        }
+        fclose($handle);
+    }, $filename, ['Content-Type' => 'text/csv']);
+}
