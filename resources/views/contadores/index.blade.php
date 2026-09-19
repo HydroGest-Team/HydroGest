@@ -69,11 +69,16 @@
                                     {{ $contador->activo_contador === 'ACTIVO' ? 'Desactivar' : 'Activar' }}
                                 </button>
                             </form>
-                            <form action="{{ route('contadores.destroy', $contador->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este contador?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                            </form>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger btn-eliminar-contador"
+                                data-bs-toggle="modal"
+                                data-bs-target="#eliminarContadorModal"
+                                data-id="{{ $contador->id }}"
+                                data-codigo="{{ $contador->codigo_contador }}"
+                            >
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -131,6 +136,29 @@
     </div>
 </div>
 
+{{-- Modal de confirmacion para eliminar --}}
+<div class="modal fade" id="eliminarContadorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro que deseas eliminar el contador <strong id="eliminarContadorCodigo"></strong>? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="eliminarContadorForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     document.getElementById('btnNuevoContador').addEventListener('click', function() {
@@ -150,6 +178,14 @@
             document.getElementById('contador_sector').value = d.sector;
             document.getElementById('contador_fecha').value = d.fecha;
             document.getElementById('contador_cliente').value = d.cliente;
+        });
+    });
+
+    document.querySelectorAll('.btn-eliminar-cliente').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const d = btn.dataset;
+            document.getElementById('eliminarClienteNombre').innerText = d.nombre;
+            document.getElementById('eliminarClienteForm').action = "{{ url('clientes') }}/" + d.id;
         });
     });
 </script>
