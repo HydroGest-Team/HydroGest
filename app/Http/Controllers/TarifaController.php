@@ -55,30 +55,30 @@ class TarifaController extends Controller
         $tarifa->load('tipoTarifa');
         return view('tarifas.show', compact('tarifa'));
     }
-}
 
-//funcion para exportar tarifas
+    //funcion para exportar tarifas
 
-public function export()
-{
-    $tarifas = Tarifa::with('tipoTarifa')->orderByDesc('vigente_desde')->get();
-    $filename = 'tarifas_' . now()->format('Ymd_His') . '.csv';
+    public function export()
+    {
+        $tarifas = Tarifa::with('tipoTarifa')->orderByDesc('vigente_desde')->get();
+        $filename = 'tarifas_' . now()->format('Ymd_His') . '.csv';
 
-    return response()->streamDownload(function () use ($tarifas) {
-        $handle = fopen('php://output', 'w');
-        fputs($handle, "\xEF\xBB\xBF");
-        fputcsv($handle, ['Tipo', 'Monto por unidad', 'Cantidad paja', 'Vigente desde', 'Vigente hasta', 'Estado']);
+        return response()->streamDownload(function () use ($tarifas) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['Tipo', 'Monto por unidad', 'Cantidad paja', 'Vigente desde', 'Vigente hasta', 'Estado']);
 
-        foreach ($tarifas as $t) {
-            fputcsv($handle, [
-                $t->tipoTarifa->nombre_tipo ?? '—',
-                number_format($t->monto_por_unidad, 2),
-                $t->cantidad_paja,
-                $t->vigente_desde->format('d/m/Y'),
-                $t->vigente_hasta?->format('d/m/Y'),
-                is_null($t->vigente_hasta) ? 'Vigente' : 'Vencida',
-            ]);
-        }
-        fclose($handle);
-    }, $filename, ['Content-Type' => 'text/csv']);
+            foreach ($tarifas as $t) {
+                fputcsv($handle, [
+                    $t->tipoTarifa->nombre_tipo ?? '—',
+                    number_format($t->monto_por_unidad, 2),
+                    $t->cantidad_paja,
+                    $t->vigente_desde->format('d/m/Y'),
+                    $t->vigente_hasta?->format('d/m/Y'),
+                    is_null($t->vigente_hasta) ? 'Vigente' : 'Vencida',
+                ]);
+            }
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
 }

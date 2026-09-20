@@ -72,30 +72,30 @@ class PagoController extends Controller
         return redirect()->route('lecturas.show', $lectura)
             ->with('success', 'Pago registrado correctamente.');
     }
-}
 
-//funcion para exportar pagos
+    //funcion para exportar pagos
 
-public function export()
-{
-    $pagos = Pago::with('lectura.contador.cliente')->latest('fecha_pago')->get();
-    $filename = 'pagos_' . now()->format('Ymd_His') . '.csv';
+    public function export()
+    {
+        $pagos = Pago::with('lectura.contador.cliente')->latest('fecha_pago')->get();
+        $filename = 'pagos_' . now()->format('Ymd_His') . '.csv';
 
-    return response()->streamDownload(function () use ($pagos) {
-        $handle = fopen('php://output', 'w');
-        fputs($handle, "\xEF\xBB\xBF");
-        fputcsv($handle, ['Cliente', 'Contador', 'Monto', 'Fecha de pago', 'Método', 'Estado']);
+        return response()->streamDownload(function () use ($pagos) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['Cliente', 'Contador', 'Monto', 'Fecha de pago', 'Método', 'Estado']);
 
-        foreach ($pagos as $p) {
-            fputcsv($handle, [
-                $p->lectura->contador->cliente->nombre_completo ?? '—',
-                $p->lectura->contador->codigo_contador ?? '—',
-                number_format($p->monto_pago, 2),
-                \Carbon\Carbon::parse($p->fecha_pago)->format('d/m/Y'),
-                $p->metodo_pago,
-                $p->estado_pago,
-            ]);
-        }
-        fclose($handle);
-    }, $filename, ['Content-Type' => 'text/csv']);
+            foreach ($pagos as $p) {
+                fputcsv($handle, [
+                    $p->lectura->contador->cliente->nombre_completo ?? '—',
+                    $p->lectura->contador->codigo_contador ?? '—',
+                    number_format($p->monto_pago, 2),
+                    \Carbon\Carbon::parse($p->fecha_pago)->format('d/m/Y'),
+                    $p->metodo_pago,
+                    $p->estado_pago,
+                ]);
+            }
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
 }

@@ -114,33 +114,32 @@ class LecturaController extends Controller
     {
         return 'REC-' . now()->format('Ymd') . '-' . str_pad((Lectura::max('id') + 1) ?? 1, 5, '0', STR_PAD_LEFT);
     }
-}
 
-//funcion para exportar lecturas
+    //funcion para exportar lecturas
+    public function export()
+    {
+        $lecturas = Lectura::with(['contador.cliente', 'periodo'])->latest('fecha_lectura')->get();
+        $filename = 'lecturas_' . now()->format('Ymd_His') . '.csv';
 
-public function export()
-{
-    $lecturas = Lectura::with(['contador.cliente', 'periodo'])->latest('fecha_lectura')->get();
-    $filename = 'lecturas_' . now()->format('Ymd_His') . '.csv';
+        return response()->streamDownload(function () use ($lecturas) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['No. Recibo', 'Cliente', 'Contador', 'Lectura anterior', 'Lectura actual', 'Consumo', 'Monto', 'Fecha', 'Estado pago']);
 
-    return response()->streamDownload(function () use ($lecturas) {
-        $handle = fopen('php://output', 'w');
-        fputs($handle, "\xEF\xBB\xBF");
-        fputcsv($handle, ['No. Recibo', 'Cliente', 'Contador', 'Lectura anterior', 'Lectura actual', 'Consumo', 'Monto', 'Fecha', 'Estado pago']);
-
-        foreach ($lecturas as $l) {
-            fputcsv($handle, [
-                $l->numero_recibo,
-                $l->contador->cliente->nombre_completo ?? '—',
-                $l->contador->codigo_contador ?? '—',
-                $l->lectura_anterior,
-                $l->lectura_actual,
-                $l->consumo,
-                number_format($l->monto, 2),
-                $l->fecha_lectura->format('d/m/Y'),
-                $l->estado_pago,
-            ]);
-        }
-        fclose($handle);
-    }, $filename, ['Content-Type' => 'text/csv']);
+            foreach ($lecturas as $l) {
+                fputcsv($handle, [
+                    $l->numero_recibo,
+                    $l->contador->cliente->nombre_completo ?? '—',
+                    $l->contador->codigo_contador ?? '—',
+                    $l->lectura_anterior,
+                    $l->lectura_actual,
+                    $l->consumo,
+                    number_format($l->monto, 2),
+                    $l->fecha_lectura->format('d/m/Y'),
+                    $l->estado_pago,
+                ]);
+            }
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
 }

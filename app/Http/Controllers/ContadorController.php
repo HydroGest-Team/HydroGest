@@ -93,28 +93,28 @@ class ContadorController extends Controller
         return redirect()->route('contadores.index')
             ->with('success', 'Contador eliminado correctamente.');
     }
-}
 
-//funcion para exportar contadores
-public function export()
-{
-    $contadores = Contador::with('cliente')->orderBy('codigo_contador')->get();
-    $filename = 'contadores_' . now()->format('Ymd_His') . '.csv';
+    //funcion para exportar contadores
+    public function export()
+    {
+        $contadores = Contador::with('cliente')->orderBy('codigo_contador')->get();
+        $filename = 'contadores_' . now()->format('Ymd_His') . '.csv';
 
-    return response()->streamDownload(function () use ($contadores) {
-        $handle = fopen('php://output', 'w');
-        fputs($handle, "\xEF\xBB\xBF");
-        fputcsv($handle, ['Código', 'Sector', 'Cliente', 'Fecha instalación', 'Estado']);
+        return response()->streamDownload(function () use ($contadores) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['Código', 'Sector', 'Cliente', 'Fecha instalación', 'Estado']);
 
-        foreach ($contadores as $c) {
-            fputcsv($handle, [
-                $c->codigo_contador,
-                $c->sector_contador,
-                $c->cliente->nombre_completo ?? '—',
-                $c->fecha_instalacion?->format('d/m/Y'),
-                $c->activo_contador,
-            ]);
-        }
-        fclose($handle);
-    }, $filename, ['Content-Type' => 'text/csv']);
+            foreach ($contadores as $c) {
+                fputcsv($handle, [
+                    $c->codigo_contador,
+                    $c->sector_contador,
+                    $c->cliente->nombre_completo ?? '—',
+                    $c->fecha_instalacion?->format('d/m/Y'),
+                    $c->activo_contador,
+                ]);
+            }
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
 }
